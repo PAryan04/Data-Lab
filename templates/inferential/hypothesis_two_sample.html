@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Hypothesis Test (Two Sample)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        .hypothesis-box {
+            margin-top: 3rem; background: white; padding: 2rem; border-radius: 8px; 
+            border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left;
+        }
+        .result-table td { padding: 10px 0; }
+        .result-table td:first-child { font-weight: bold; color: #555; width: 40%; }
+        .conclusion-text { font-size: 1.2rem; font-weight: bold; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
+        .cdf-container {
+            background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; 
+            border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 15px; align-items: center;
+        }
+        .df-row { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('inferential_statistics_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 0.5rem; color: #333;">
+                Hypothesis Test (Two Sample)
+            </h1>
+
+            <p style="margin-bottom: 1.5rem; color: #555; font-size: 0.95rem;">
+                Note: This test can be done on two independent samples.
+            </p>
+
+            <!-- Dual cdf_dl Selection Form -->
+            <div class="cdf-container">
+                <form method="GET" action="{{ url_for('hypothesis_two_sample') }}" id="cdfForm" style="width: 100%;">
+                    
+                    <div class="df-row">
+                        <label style="font-weight: bold; width: 180px; text-align: right;">1st Data-frame:</label>
+                        <select name="selected_df1" onchange="document.getElementById('cdfForm').submit()" style="width: 250px; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;">
+                            {% for name in available_dfs %}
+                            <option value="{{ name }}" {% if name == selection1 %}selected{% endif %}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="df-row">
+                        <label style="font-weight: bold; width: 180px; text-align: right;">2nd Data-frame:</label>
+                        <select name="selected_df2" onchange="document.getElementById('cdfForm').submit()" style="width: 250px; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;">
+                            {% for name in available_dfs %}
+                            <option value="{{ name }}" {% if name == selection2 %}selected{% endif %}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Main Input Form -->
+            <form method="POST">
+                <input type="hidden" name="selected_df1" value="{{ selection1 }}">
+                <input type="hidden" name="selected_df2" value="{{ selection2 }}">
+                <input type="hidden" name="action" value="test">
+
+                <div class="form-grid">
+                    <div class="grid-divider"></div>
+
+                    <!-- Hypothesis Statements -->
+                    <label>Define your H<sub>0</sub> (Null Hypothesis):</label>
+                    <input type="text" name="h0_text" placeholder="e.g., Mean 1 = Mean 2">
+
+                    <label>Define your H<sub>1</sub> (Alternative Hypothesis):</label>
+                    <input type="text" name="h1_text" placeholder="e.g., Mean 1 ≠ Mean 2">
+
+                    <div class="grid-divider"></div>
+
+                    <!-- Significance Level -->
+                    <label style="align-self: flex-start; margin-top: 10px;">Enter Significance level (&alpha;):</label>
+                    <div class="color-group">
+                        <input type="number" name="alpha" step="0.01" min="0.01" max="0.99" placeholder="1 - confidence (Ex: 0.05 for 95%)" required>
+                        <div class="color-note">
+                            (Note: Lower your &alpha; (i.e., Higher your confidence) makes it harder to reject H<sub>0</sub>.)
+                        </div>
+                    </div>
+
+                    <!-- Column Selections -->
+                    <label>Select column for test (from 1st Data-frame):</label>
+                    <select name="column1" required>
+                        <option value="" disabled selected>Select Column</option>
+                        {% for col in numeric_cols1 %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label>Select column for test (from 2nd Data-frame):</label>
+                    <select name="column2" required>
+                        <option value="" disabled selected>Select Column</option>
+                        {% for col in numeric_cols2 %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="grid-divider"></div>
+
+                    <!-- Variance -->
+                    <label>Do both samples have equal variance:</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="equal_var" value="True" checked> True</label>
+                        <label class="radio-item"><input type="radio" name="equal_var" value="False"> False</label>
+                    </div>
+
+                    <!-- Alternative -->
+                    <label>Select alternative:</label>
+                    <select name="alternative">
+                        <option value="two-sided" selected>Two-sided</option>
+                        <option value="greater">Greater</option>
+                        <option value="less">Less</option>
+                    </select>
+
+                </div>
+
+                <div style="margin-top: 2.5rem;">
+                    <button type="submit" class="btn-purple" style="padding: 0.8rem 3rem;">Test</button>
+                </div>
+            </form>
+
+            <!-- Results Output -->
+            {% if result %}
+            <div class="hypothesis-box">
+                <h3 style="margin-bottom: 1.5rem; color: #6a1b9a; border-bottom: 2px solid #eee; padding-bottom: 0.5rem;">Test Results</h3>
+                
+                <table class="result-table" style="width: 100%; border-collapse: collapse; font-size: 1.1rem;">
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td>Null Hypothesis (H<sub>0</sub>)</td>
+                            <td>{{ result.h0 if result.h0 else "None specified" }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td>Alternative Hypothesis (H<sub>1</sub>)</td>
+                            <td>{{ result.h1 if result.h1 else "None specified" }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td>Column 1 (Sample 1)</td>
+                            <td>{{ result.col1 }} (Mean: {{ result.mean1 }})</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td>Column 2 (Sample 2)</td>
+                            <td>{{ result.col2 }} (Mean: {{ result.mean2 }})</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td>Significance Level (&alpha;)</td>
+                            <td>{{ result.alpha }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee; background-color: #f9f9f9;">
+                            <td style="color: #333; padding-left: 5px;">t-statistic</td>
+                            <td style="color: #333;"><b>{{ result.t_stat }}</b></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee; background-color: #f9f9f9;">
+                            <td style="color: #333; padding-left: 5px;">p-value</td>
+                            <td style="color: #333;"><b>{{ result.p_value }}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                {% if result.p_value < result.alpha %}
+                    <div class="conclusion-text" style="color: #388e3c;">
+                        Hence, there is enough evidence to reject H<sub>0</sub>.
+                    </div>
+                {% else %}
+                    <div class="conclusion-text" style="color: #d32f2f;">
+                        Hence, there is not enough evidence to reject H<sub>0</sub>. You can try with lesser confidence.
+                    </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

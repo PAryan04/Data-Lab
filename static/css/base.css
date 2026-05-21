@@ -1,0 +1,211 @@
+/* ===== Global styles ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #000000;
+}
+
+/* Full-page gradient background - LIGHT BLUES */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    
+    /* GRADIENT FIXES */
+    background: linear-gradient(135deg, #e0f7fa 0%, #e1bee7 100%);
+    background-repeat: no-repeat;     /* STOP REPEATING */
+    background-attachment: fixed;     /* LOCK IN PLACE */
+    background-size: cover;           /* STRETCH TO FILL */
+    min-height: 100vh;                /* FULL HEIGHT */
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* Simple bounce animation for entrances */
+@keyframes floatIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Slight "bouncy" hover */
+@keyframes bounceHover {
+    0%   { transform: translateY(0); }
+    40%  { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+
+/* ===== Layout: header / main / footer ===== */
+
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header - LIGHT LEMON YELLOW */
+.site-header {
+    padding: 1.5rem 7vw 0.75rem 7vw;
+    background: linear-gradient(90deg, #fffcc6, #fff8a6, #fff4b1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    animation: floatIn 0.7s ease-out;
+}
+
+.site-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #111111;
+    letter-spacing: 0.04em;
+}
+
+.site-tagline {
+    margin-top: 0.15rem;
+    font-size: 1.1rem;
+    font-style: italic;
+    font-weight: 700;
+    color: #222222;
+}
+
+/* Main content area */
+.site-main {
+    flex: 1;
+    padding: 2.5rem 7vw 2rem 7vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Card-style container for homepage text */
+.hero-card {
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 18px;
+    padding: 2.5rem 2.8rem;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    text-align: center;
+    animation: floatIn 0.8s ease-out;
+}
+
+/* Main descriptive text */
+.hero-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* "Hey Analyst!!" and follow-up text */
+.hero-subtitle {
+    margin-top: 1.8rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-style: italic;
+    color: #000000;
+}
+
+.hero-question {
+    margin-top: 0.4rem;
+    font-size: 1.0rem;
+    font-style: italic;
+    color: #000000;
+}
+
+/* Call-to-action button - LIGHT BLUES */
+.btn-primary {
+    display: inline-block;
+    margin-top: 1.8rem;
+    padding: 0.9rem 2.4rem;
+    border-radius: 999px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #000000;
+    background: linear-gradient(135deg, #4a90e2, #7ab8f5, #b3d9ff);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    transition:
+        transform 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        background 0.25s ease-out;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.30);
+    animation: bounceHover 0.25s ease-out;
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Footer - LIGHT LEMON YELLOW */
+.site-footer {
+    padding: 0.7rem 7vw 1.1rem 7vw;
+    background: linear-gradient(90deg, #fffcc6, #fff8a6, #fff4b1);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.footer-inner {
+    text-align: right;
+    color: #111111;
+}
+
+.footer-small {
+    font-size: 0.78rem;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.footer-author {
+    margin-top: 0.1rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    font-weight: 800;
+}
+
+/* Back button - INSIDE content, top-left corner */
+.back-btn {
+    display: inline-block;
+    margin: 1rem 0 0 0;
+    padding: 0;
+}
+
+.back-btn button {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 1.15rem;
+    font-weight: 900;       /* Extra bold */
+    cursor: pointer;
+    padding: 0.3rem 0.8rem 0.3rem 0; /* Left padding only */
+    line-height: 1.2;
+    transition: all 0.2s ease;
+}
+
+.back-btn button:hover {
+    color: #4a90e2;         /* Blue on hover */
+    transform: scale(1.05);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+

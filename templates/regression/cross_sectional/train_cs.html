@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Train Prediction Model</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 6px;
+            background: #fff;
+        }
+        .checkbox-item { display: flex; align-items: center; gap: 5px; font-weight: normal !important; }
+        .summary-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; font-size: 0.95rem; }
+        .summary-table th, .summary-table td { padding: 8px; border: 1px solid #ddd; text-align: center; }
+        .summary-table th { background-color: #f3e5f5; color: #6a1b9a; }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('linear_regression_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 1.5rem; color: #333;">
+                Train Prediction Model
+            </h1>
+
+            <!-- cdf_dl -->
+            <div class="cdf-container" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <form method="GET" action="{{ url_for('train_prediction_model') }}" id="cdfForm">
+                    <label style="font-weight: bold; margin-right: 10px;">Select custom data frame:</label>
+                    <select name="selected_df" onchange="document.getElementById('cdfForm').submit()" style="width: 250px; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;">
+                        {% for name in available_dfs %}
+                        <option value="{{ name }}" {% if name == current_selection %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <form method="POST">
+                <input type="hidden" name="selected_df" value="{{ current_selection }}">
+                <input type="hidden" name="action" value="train">
+
+                <div class="form-grid" style="align-items: start;">
+                    
+                    <div class="grid-divider"></div>
+
+                    <!-- Model Name -->
+                    <label style="margin-top: 10px;">Define Model Name:</label>
+                    <input type="text" name="model_name" placeholder="e.g., Sales_Predictor_V1" required>
+
+                    <!-- Dependent Variable Y -->
+                    <label style="margin-top: 10px;">Select Dependent variable (Y):</label>
+                    <select name="y_col" required>
+                        <option value="" disabled selected>Select Numeric Column</option>
+                        {% for col in numeric_cols %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="grid-divider"></div>
+
+                    <!-- Independent Variables X -->
+                    <label style="margin-top: 10px;">Select Independent variable (X):</label>
+                    <div style="width: 100%; max-width: 400px; text-align: left;">
+                        <div class="checkbox-grid">
+                            {% for col in all_cols %}
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="x_cols" value="{{ col }}"> {{ col }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div style="font-size: 0.8rem; color: #666; margin-top: 5px; font-style: italic;">
+                            (Note: Other than numeric columns, you may only select categorical columns. Do not select your Y variable here.)
+                        </div>
+                    </div>
+
+                    <!-- Train Test Split -->
+                    <label style="margin-top: 10px;">Select train-test split:</label>
+                    <select name="test_size" required>
+                        <option value="0.2" selected>80% Train / 20% Test</option>
+                        <option value="0.25">75% Train / 25% Test</option>
+                        <option value="0.3">70% Train / 30% Test</option>
+                        <option value="0.1">90% Train / 10% Test</option>
+                    </select>
+
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn-purple" style="padding: 0.8rem 3rem;">Train</button>
+                </div>
+            </form>
+
+            <!-- Results Output -->
+            {% if result %}
+            <div style="margin-top: 3rem; text-align: left; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <h3 style="color: #6a1b9a; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                    Training Results: <i>{{ result.model_name }}</i>
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 2rem;">
+                    <!-- Key Highlights -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
+                        <h4 style="margin-bottom: 10px; color: #333;">Key Highlights</h4>
+                        <p><b>Target (Y):</b> {{ result.y_col }}</p>
+                        <p><b>R-squared:</b> {{ result.r_squared }}</p>
+                        <p><b>Adj. R-squared:</b> {{ result.adj_r_squared }}</p>
+                    </div>
+
+                    <!-- Evaluation -->
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
+                        <h4 style="margin-bottom: 10px; color: #333;">Model Evaluation (Test Data)</h4>
+                        <p><b>Train Size:</b> {{ result.train_size }} rows</p>
+                        <p><b>Test Size:</b> {{ result.test_size }} rows</p>
+                        <p><b>Mean Absolute Error (MAE):</b> {{ result.mae }}</p>
+                    </div>
+                </div>
+
+                <!-- OLS Summary Table -->
+                <h4 style="color: #333; margin-bottom: 10px;">OLS Coefficients Summary</h4>
+                <div style="overflow-x: auto;">
+                    <div class="summary-table">
+                        {{ result.summary_html | safe }}
+                    </div>
+                </div>
+
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

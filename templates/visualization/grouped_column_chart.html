@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Grouped Column Chart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+            
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('visualization_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 0.5rem; color: #333;">
+                Grouped Column Chart
+            </h1>
+            
+            <p style="margin-bottom: 1.5rem; color: #555; font-size: 0.95rem;">
+                Note: You need to group your data first for this chart, so if not done then do it from 
+                <a href="{{ url_for('segmentation') }}" style="color: #6a1b9a; text-decoration: underline; font-weight: bold;">here</a>.
+            </p>
+
+            <!-- CDF_DL -->
+            <div class="cdf-container" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <form method="GET" action="{{ url_for('grouped_column_chart') }}" id="cdfForm" style="display: flex; align-items: center; gap: 10px; margin: 0;">
+                    <label style="font-weight: bold; margin: 0;">Select custom data frame:</label>
+                    <select name="selected_df" onchange="document.getElementById('cdfForm').submit()" style="width: 250px; margin: 0; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;">
+                        {% for name in available_dfs %}
+                        <option value="{{ name }}" {% if name == current_selection %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <form method="POST">
+                <input type="hidden" name="selected_df" value="{{ current_selection }}">
+                <input type="hidden" name="action" value="create">
+
+                <!-- MAIN FORM GRID -->
+                <div class="form-grid">
+                    
+                    <!-- X Axis -->
+                    <label>Select column on x-axis:</label>
+                    <select name="xaxis">
+                        <option value="" disabled selected>Select Column</option>
+                        {% for col in columns %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Y Axis -->
+                    <label>Select column on y-axis (Groups):</label>
+                    <select name="yaxis">
+                        <option value="" disabled selected>Select Column</option>
+                        {% for col in columns %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Divider -->
+                    <div class="grid-divider"></div>
+
+                    <!-- Labels -->
+                    <label>Give X-label:</label>
+                    <input type="text" name="xlabel" placeholder="Optional (Default: Col Name)">
+
+                    <label>Give Y-label:</label>
+                    <input type="text" name="ylabel" placeholder="Optional (Default: Col Name)">
+
+                    <label>Give Title:</label>
+                    <input type="text" name="title" placeholder="Optional">
+
+                    <!-- Ticks -->
+                    <label>X-ticks rotation(in degrees):</label>
+                    <input type="number" name="x_rot" placeholder="0">
+
+                    <label>Y-ticks rotation(in degrees):</label>
+                    <input type="number" name="y_rot" placeholder="0">
+
+                    <!-- Color -->
+                    <label style="align-self: flex-start; margin-top: 10px;">Color(s):</label>
+                    <div class="color-group">
+                        <input type="text" name="color" placeholder="e.g. red, blue, #ff0000">
+                        <div class="color-note">
+                            (Note: Separate multiple colors by commas for grouped bars. Use the exact name of compatible colors. If you don't know then <a href="https://python-graph-gallery.com/available-colors-in-matplotlib/" target="_blank" style="color: #6a1b9a; text-decoration: underline;">Click here</a> to see color options.)
+                        </div>
+                    </div>
+
+                    <!-- Grid -->
+                    <label>Grid:</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="grid" value="on"> On</label>
+                        <label class="radio-item"><input type="radio" name="grid" value="off" checked> Off</label>
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn-purple" style="padding: 0.8rem 3rem;">Create</button>
+                </div>
+            </form>
+
+            <!-- Preview & Download (pnd) -->
+            {% if chart_image %}
+                <div style="margin-top: 3rem; border-top: 1px solid #ccc; padding-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">Chart Preview:</h3>
+                    
+                    <img src="{{ url_for('static', filename='charts/' + chart_image) }}" 
+                         alt="Generated Grouped Chart" 
+                         style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    
+                    <br><br>
+                    
+                    <a href="{{ url_for('static', filename='charts/' + chart_image) }}" download="GroupedColumnChart.jpeg">
+                        <button class="btn-purple">Download Chart (.jpeg)</button>
+                    </a>
+                </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

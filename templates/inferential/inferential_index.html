@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Inferential Statistics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+            
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('upload_success') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 2rem; color: #333;">
+                Inferential Statistics
+            </h1>
+
+            <div class="menu-grid">
+                
+                <!-- 3.5.1 Confidence Intervals -->
+                <a href="{{ url_for('confidence_interval') }}" class="grid-btn">
+                    Confidence Intervals
+                </a>
+
+                <!-- 3.5.2 Hypothesis Test (One Sample) -->
+                <a href="{{ url_for('hypothesis_one_sample') }}" class="grid-btn">
+                    Hypothesis Test (One Sample)
+                </a>
+
+                <!-- 3.5.3 Hypothesis Test (Two Sample) -->
+                <a href="{{ url_for('hypothesis_two_sample') }}" class="grid-btn">
+                    Hypothesis Test (Two Sample)
+                </a>
+
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

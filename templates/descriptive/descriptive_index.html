@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Descriptive Statistics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <style>
+    .menu-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        max-width: 500px;
+        margin: 2rem auto 0;
+    }
+    .btn-secondary {
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        border: none;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #000;
+        background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .dataset-info {
+        background: rgba(255,255,255,0.8);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site-main">
+        <section class="hero-card">
+            <!-- Back button INSIDE content -->
+        <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+            <a href="{{ url_for('upload_success') }}" class="back-btn">
+                    <button>← Back</button>
+            </a>
+        </div>
+        
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 0.5rem; color: #333;">
+                Descriptive Statistics
+            </h1>
+            
+            <!-- Dataset info from session -->
+            <div class="dataset-info">
+                <strong>Dataset:</strong> {{ session.filename }}<br>
+                <strong>Shape:</strong> {{ session.shape[0] }} rows × {{ session.shape[1] }} columns
+            </div>
+
+            <!-- Two buttons -->
+            <div class="menu-buttons">
+                <a href="{{ url_for('central_tendency') }}" class="btn-secondary">
+                <b>Find Central Tendency</b>
+                </a>
+                <a href="{{ url_for('correlation_pairplot') }}" class="btn-secondary">
+                <b>Find Correlation</b>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

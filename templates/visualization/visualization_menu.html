@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('upload_success') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.5rem; font-weight: 800; font-style: italic; margin: 2rem 0;">
+                Visualization
+            </h1>
+
+            <div class="menu-grid">
+                <!-- 3.4.1 Column Chart -->
+                <a href="{{ url_for('column_chart') }}" class="grid-btn">
+                    Column Chart
+                </a>
+                
+                <!-- 3.4.2 Grouped Column Chart -->
+                <a href="{{ url_for('grouped_column_chart') }}" class="grid-btn">
+                    Grouped Column Chart
+                </a>
+                
+                <!-- 3.4.3 Stacked Column Chart -->
+                <a href="{{ url_for('stacked_column_chart') }}" class="grid-btn">
+                    Stacked Column Chart
+                </a>
+
+                <!-- 3.4.4 Line Chart -->
+                <a href="{{ url_for('line_chart') }}" class="grid-btn">
+                    Line Chart
+                </a>
+
+                <!-- 3.4.5 Histogram -->
+                <a href="{{ url_for('histogram') }}" class="grid-btn">
+                    Histogram
+                </a>
+
+                <!-- 3.4.6 Scatter Chart -->
+                <a href="{{ url_for('scatter_chart') }}" class="grid-btn">
+                    Scatter Chart
+                </a>
+
+                <!-- 3.4.7 Box Plot -->
+                <a href="{{ url_for('box_plot') }}" class="grid-btn">
+                    Box Plot
+                </a>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Time Series Modifications</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body> <!-- Blue Theme -->
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+            
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('upload_success') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 1.5rem; color: #333;">
+                Time Series Modifications
+            </h1>
+
+            <div class="menu-grid">
+                <!-- 3.2.1 -->
+                <a href="{{ url_for('convert_date_index') }}" class="grid-btn">
+                    Convert to Date Indices
+                </a>
+                
+                <!-- 3.2.2 -->
+                <a href="{{ url_for('date_filtering') }}" class="grid-btn">
+                    Date Filtering
+                </a>
+                
+                <!-- 3.2.3 -->
+                <a href="{{ url_for('date_segmentation') }}" class="grid-btn">
+                    Date Segmentation
+                </a> 
+                
+                <!-- 3.2.4 -->
+                <a href="{{ url_for('moving_average') }}" class="grid-btn">
+                    Moving Average
+                </a>
+
+                <!-- 3.2.5 -->
+                <a href="{{ url_for('percent_change') }}" class="grid-btn">
+                    Percent Change
+                </a>
+
+                <!-- 3.2.6 -->
+                <a href="{{ url_for('resample_data') }}" class="grid-btn">
+                    Resampling
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

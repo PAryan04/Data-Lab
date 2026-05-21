@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Change Indices</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        .dataframe {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            background: white;
+        }
+        .dataframe th, .dataframe td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .dataframe th { background: #f3e5f5; color: #4a148c; }
+        .form-group { margin: 1.5rem 0; text-align: center; }
+        select { padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; min-width: 250px; }
+        
+        .cdf-container {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #e0e0e0;
+        }
+        .tip-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+            
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('modifications_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 0.5rem; color: #333;">
+                Change/Set Indices
+            </h1>
+
+            <!-- CDF_DL -->
+            <div class="cdf-container">
+                <form method="GET" action="{{ url_for('change_indices') }}" id="cdfForm">
+                    <label style="font-weight: bold; margin-right: 10px;">Select custom data frame:</label>
+                    <select name="selected_df" onchange="document.getElementById('cdfForm').submit()">
+                        {% for name in available_dfs %}
+                        <option value="{{ name }}" {% if name == current_selection %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <!-- Set Index Form -->
+            <form method="POST">
+                <input type="hidden" name="selected_df" value="{{ current_selection }}">
+                <input type="hidden" name="action" value="set_index">
+
+                <div class="form-group">
+                    <label for="index_col" style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Select column to set it as index:</label>
+                    <select name="index_col" id="index_col" required>
+                        {% for col in columns %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="tip-text">
+                        (Tip: Use column that has unique value for each row of dataset)
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-purple">
+                    Change/Set
+                </button>
+            </form>
+
+            <!-- Results -->
+            {% if head_html %}
+                <div style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">Sample of edited dataset:</h3>
+                    
+                    <div style="overflow-x: auto; margin-bottom: 2rem;">
+                        {{ head_html|safe }}
+                    </div>
+
+                    <!-- Download Button -->
+                    {% if current_selection == 'Main Uploaded File' %}
+                        <a href="{{ url_for('download_current') }}"><button class="btn-purple">Download Edited File</button></a>
+                    {% else %}
+                        <a href="{{ url_for('download_custom', name=current_selection) }}"><button class="btn-purple">Download {{ current_selection }}</button></a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

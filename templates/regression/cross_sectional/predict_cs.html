@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Make Predictions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('linear_regression_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 1.5rem; color: #333;">
+                Make Predictions
+            </h1>
+
+            <form method="POST">
+                <input type="hidden" name="action" value="predict">
+
+                <div class="form-grid">
+                    
+                    <div class="grid-divider"></div>
+
+                    <!-- Model Selection -->
+                    <label>Select Trained Model:</label>
+                    <select name="model_name" required>
+                        <option value="" disabled selected>Select Model</option>
+                        {% for m in available_models %}
+                        <option value="{{ m }}">{{ m }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Predictors Input -->
+                    <label style="align-self: flex-start; margin-top: 10px;">Enter Predictors (X):</label>
+                    <div class="color-group">
+                        <input type="text" name="predictors" placeholder="e.g., 25, 4.5; 30, 5.0" required>
+                        <div class="color-note">
+                            (Note: Separate variables with commas. To predict multiple rows at once, separate them with semicolons <b>;</b>)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 2.5rem;">
+                    <button type="submit" class="btn-purple" style="padding: 0.8rem 3rem;">Predict</button>
+                </div>
+            </form>
+
+            <!-- Results Output -->
+            {% if result %}
+            <div style="margin-top: 3rem; text-align: left; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <h3 style="color: #6a1b9a; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                    Prediction Results for: <i>{{ result.model_name }}</i>
+                </h3>
+                
+                <table style="width: 100%; border-collapse: collapse; font-size: 1.1rem; text-align: center;">
+                    <thead>
+                        <tr style="background-color: #f8f9fa; border-bottom: 2px solid #ccc;">
+                            <th style="padding: 10px;">Row #</th>
+                            <th style="padding: 10px;">Inputs (X)</th>
+                            <th style="padding: 10px; color: #d32f2f;">Predicted Value (Y)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in result.predictions_list %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px;">{{ loop.index }}</td>
+                            <td style="padding: 10px;">[ {{ item.inputs | join(', ') }} ]</td>
+                            <td style="padding: 10px; font-weight: bold; color: #d32f2f;">
+                                {{ item.prediction }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            <!-- If no models exist warning -->
+            {% if not available_models %}
+            <div style="margin-top: 2rem; color: #cc0000; font-style: italic;">
+                You haven't trained any models yet! Please go to "Train Prediction Model" first.
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Upload Success</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <style>
+        /* Quick button grid 3x2 */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 2rem auto 0;
+        }
+
+        .grid-btn {
+            /* Flex properties to center text in the grid tile */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 80px; /* Ensure buttons have height in grid */
+            
+            /* Visual Styles from 3.3 */
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #000;
+            
+            /* The specific gradient and shadow you wanted */
+            background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        /* Hover State from 3.3 */
+        .grid-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #333, #555);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+        .grid-btn:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-4px);
+        }
+        /* Tooltip arrow */
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+        }
+        .note {
+            background: rgba(255,255,255,0.6);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site-main">
+    <section class="hero-card">
+        <!-- Back button INSIDE content -->
+        <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+            <a href="{{ url_for('upload_file') }}" class="back-btn">
+                <button>← Back</button>
+            </a>
+        </div>
+        
+        <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;">
+            <i>{{ filename }} Uploaded Successfully!</i>
+        </h2>
+        
+        <p style="font-size: 1.15rem; font-style: italic; margin: 1rem 0;">
+            Ready to dive deeper into your Data!!
+        </p>
+        
+        <div class="note">
+            <i>(Note: Give inputs as instructed throughout the website else some error might occur.)</i>
+        </div>
+
+        <!-- 3x2 Button grid with tooltips -->
+        <div class="menu-grid">
+            <a href="{{ url_for('modifications_menu') }}">
+                <button class="grid-btn">
+                    Modifications
+                    <span class="tooltip">Set/Change indices, apply filtering/sorting to your data, perform segmentation, etc..</span>
+                </button>
+            </a>
+            <a href="{{ url_for('time_series_menu') }}">
+                <button class="grid-btn">
+                    Time Series Modifications
+                    <span class="tooltip">Similar to Modifications but for Time Series data</span>
+                </button>
+            </a>
+            <a href="{{ url_for('descriptive_menu') }}">
+                <button class="grid-btn">
+                    Descriptive Statistics
+                    <span class="tooltip">Find Descriptive Statistics</span>
+                </button>
+            </a>
+            <a href="{{ url_for('visualization_menu') }}">
+                <button class="grid-btn">
+                    Visualize your Data
+                    <span class="tooltip">Plot various types of graphs/charts</span>
+                </button>
+            </a>
+            <a href="{{ url_for('inferential_statistics_menu') }}">
+                <button class="grid-btn">
+                    Inferential Statistics
+                    <span class="tooltip">Find Inferential Statistics</span>
+                </button>
+            </a>
+            <a href="{{ url_for('linear_regression_menu') }}">
+                <button class="grid-btn">
+                    Train Regression Model
+                    <span class="tooltip">Make Prediction or Forecasting Model</span>
+                </button>
+            </a>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

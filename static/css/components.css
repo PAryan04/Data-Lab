@@ -1,0 +1,215 @@
+/* ===== Components.css - Purple theme + output boxes ===== */
+
+/* GRID LAYOUT: 2 Columns, 3 Rows */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 2rem auto 0;
+        }
+
+        .grid-btn {
+            /* Flex properties to center text in the grid tile */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 80px; /* Ensure buttons have height in grid */
+            
+            /* Visual Styles from 3.3 */
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #000;
+            
+            /* The specific gradient and shadow you wanted */
+            background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        /* Hover State from 3.3 */
+        .grid-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+.btn-purple {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa, #c4b5fd);
+    color: #000;
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(139, 92, 246, 0.5);
+}
+
+.btn-purple:active {
+    transform: translateY(0);
+}
+
+/* Output box - readable results */
+.output-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid #8b5cf6;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.output-box h3 {
+    margin-bottom: 1rem;
+    color: #6b46c1;
+    font-size: 1.2rem;
+}
+
+.output-box pre, .output-box table {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.form-group select {
+    width: 100%;
+    max-width: 350px;
+    padding: 0.8rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: white;
+    transition: border-color 0.2s;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* More columns prompt */
+.more-columns {
+    text-align: center;
+    margin: 2rem 0 1rem 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 12px;
+}
+
+.more-columns b {
+    color: #1e40af;
+    font-size: 1.1rem;
+}
+
+/* --- Visualization Form Grid Layout --- */
+.form-grid {
+    display: grid;
+    grid-template-columns: 250px 1fr; /* Fixed label width | Fluid input width */
+    gap: 15px 20px;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.form-grid label {
+    font-weight: bold;
+    text-align: right;
+    color: #333;
+}
+
+.form-grid select, 
+.form-grid input[type="text"], 
+.form-grid input[type="number"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* Special handling for Color Note section */
+.color-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.color-note {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
+    max-width: 350px;
+    line-height: 1.4;
+}
+
+/* Horizontal Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal !important;
+    cursor: pointer;
+}
+
+/* Horizontal Divider in Grid */
+.grid-divider {
+    grid-column: 1 / -1; 
+    border-top: 1px solid #eee; 
+    margin: 10px 0;
+}
+
+/* CDF Container */
+.cdf-container {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site-main">
+        <section class="hero-card">
+            <p class="hero-description">
+                <b>
+                Data Analytics is the systematic process of collecting, cleaning, and analyzing data
+                to extract meaningful insights and support informed decision-making. It involves
+                working with different types of data such as cross-sectional data and time-series data,
+                and applying descriptive statistics to summarize and understand data characteristics.
+                Using inferential statistics, data analytics draws conclusions and makes generalizations
+                about larger populations. Through effective data visualization, complex patterns and
+                trends are communicated clearly, while techniques such as linear regression are used
+                for prediction and forecasting to support data-driven strategies.
+                </b>
+            </p>
+
+            <p class="hero-subtitle"><b><i>Hey Analyst!!</i></b></p>
+            <p class="hero-question"><i>Wanted to get your hands dirty with data?</i></p>
+
+            <!-- Button to go to page 2 (upload) -->
+            <a href="{{ url_for('upload_file') }}">
+                <button class="btn-primary"><b>Lets' get started!</b></button>
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

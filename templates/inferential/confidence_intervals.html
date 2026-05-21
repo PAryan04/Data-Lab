@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Confidence Intervals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('inferential_statistics_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 1.5rem; color: #333;">
+                Confidence Intervals
+            </h1>
+
+            <!-- cdf_dl -->
+            <div class="cdf-container" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <form method="GET" action="{{ url_for('confidence_interval') }}" id="cdfForm">
+                    <label style="font-weight: bold; margin-right: 10px;">Select custom data frame:</label>
+                    <select name="selected_df" onchange="document.getElementById('cdfForm').submit()" style="width: 250px;">
+                        {% for name in available_dfs %}
+                        <option value="{{ name }}" {% if name == current_selection %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <form method="POST">
+                <input type="hidden" name="selected_df" value="{{ current_selection }}">
+                <input type="hidden" name="action" value="calculate">
+
+                <div class="form-grid">
+                    
+                    <div class="grid-divider"></div>
+
+                    <!-- Column Selection -->
+                    <label>Select Numeric Column:</label>
+                    <select name="column" required>
+                        <option value="" disabled selected>Select Column</option>
+                        {% for col in numeric_cols %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Confidence Level -->
+                    <label>Confidence Level (%):</label>
+                    <input type="number" name="confidence_level" placeholder="e.g. 95" step="0.1" min="0.1" max="99.9" required>
+
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn-purple" style="padding: 0.8rem 3rem;">Calculate</button>
+                </div>
+            </form>
+
+            <!-- Results Output -->
+            {% if result %}
+            <div style="margin-top: 3rem; text-align: left; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <h3 style="margin-bottom: 1.5rem; color: #6a1b9a; border-bottom: 2px solid #eee; padding-bottom: 0.5rem;">Results for: <i>{{ result.column }}</i></h3>
+                
+                <table style="width: 100%; border-collapse: collapse; font-size: 1.1rem;">
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0; font-weight: bold; color: #555; width: 50%;">Confidence Level</td>
+                            <td style="padding: 10px 0;">{{ result.confidence_level }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0; font-weight: bold; color: #555;">Valid Sample Size (n)</td>
+                            <td style="padding: 10px 0;">{{ result.sample_size }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0; font-weight: bold; color: #555;">Sample Mean (x̄)</td>
+                            <td style="padding: 10px 0;">{{ result.mean }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px 0 10px 0; font-weight: bold; color: #333; font-size: 1.2rem;">Confidence Interval</td>
+                            <td style="padding: 15px 0 10px 0; font-weight: bold; color: #333; font-size: 1.2rem;">
+                                [ {{ result.lower_bound }} , {{ result.upper_bound }} ]
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

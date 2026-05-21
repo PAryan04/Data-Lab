@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <style>
+        .error-popup {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: floatIn 0.4s ease-out;
+        }
+        .error-popup p {
+            margin: 0;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site-main">
+    <section class="hero-card" style="text-align: center;">
+        <!-- Back button INSIDE content -->
+        <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+            <a href="{{ url_for('home') }}" class="back-btn">
+                <button>← Back</button>
+            </a>
+        </div>
+        <h2 style="margin-bottom: 1.2rem; font-weight: 800;">Upload your dataset</h2>
+        <p class="hero-question" style="margin-bottom: 1rem;"><i>Select a CSV/XLSX file to begin your analysis journey.</i></p>
+        
+        <!-- File size note -->
+        <p style="font-size: 0.82rem; opacity: 0.8; margin: 0.8rem 0 1.5rem 0; background: rgba(255,255,255,0.7); padding: 0.4rem 0.8rem; border-radius: 6px; display: inline-block;">
+            <b>Note:</b> File size < 20MB (CSV/XLSX only)
+        </p>
+
+        <!-- Error popup (already centered) -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="error-popup">
+                        <p>Sorry! Something went wrong while upload.</p>
+                        <p style="font-size: 0.85em; opacity: 0.95;">{{ message }}</p>
+                        <a href="{{ url_for('upload_file') }}" style="display: inline-block; margin-top: 0.8rem;">
+                            <button class="btn-primary" style="
+                                background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+                                color: white;
+                                padding: 0.6rem 1.6rem;
+                                font-size: 0.9rem;
+                            ">Try Again!</button>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Centered upload form -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" style="width: 100%; max-width: 400px;">
+                <input type="file" name="data_file" accept=".csv,.xlsx"
+                       style="
+                           width: 100%; 
+                           padding: 0.8rem; 
+                           border: 2px dashed #4a90e2; 
+                           border-radius: 12px; 
+                           background: rgba(255,255,255,0.9);
+                           font-size: 1rem;
+                           text-align: center;
+                       ">
+                <button type="submit" class="btn-primary" style="width: 100%;">Upload & Continue</button>
+            </form>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+
+<script>
+// Auto-scroll to error if exists
+document.addEventListener('DOMContentLoaded', function() {
+    const errorPopup = document.querySelector('.error-popup');
+    if (errorPopup) {
+        errorPopup.scrollIntoView({ behavior: 'smooth' });
+    }
+});
+</script>
+</body>
+</html>

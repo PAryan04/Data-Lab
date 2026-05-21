@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Filtering</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        .form-group { margin: 1.5rem 0; }
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        select, input[type="text"] {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .note-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.4rem;
+            font-style: italic;
+        }
+        .dataframe {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .dataframe th, .dataframe td { padding: 8px; border: 1px solid #ddd; text-align: center; }
+        .dataframe th { background: #f3e5f5; color: #4a148c; }
+        
+        /* CDF Style */
+        .cdf-container {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+            
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('modifications_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 1.8rem; font-weight: 800; font-style: italic; margin-bottom: 2rem; color: #333;">
+                Apply filter and save it in a custom Data Frame for future use
+            </h1>
+
+            <!-- CDF_DL: Select which DF to filter from -->
+            <div class="cdf-container">
+                <form method="GET" action="{{ url_for('filtering') }}" id="cdfForm">
+                    <label style="font-weight: bold; margin-right: 10px;">Select data frame to filter:</label>
+                    <select name="selected_df" onchange="document.getElementById('cdfForm').submit()">
+                        {% for name in available_dfs %}
+                        <option value="{{ name }}" {% if name == current_selection %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <form method="POST">
+                <input type="hidden" name="selected_df" value="{{ current_selection }}">
+                <input type="hidden" name="action" value="apply_filter">
+
+                <!-- 1. Name Input -->
+                <div class="form-group">
+                    <label style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Name your new data frame:</label>
+                    <input type="text" name="df_name" required placeholder="e.g. High_Sales_Data" style="width: 250px;">
+                    <div class="note-text">(Note: Keep in mind the naming rules and also don't repeat same name)</div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #ddd; margin: 2rem 0;">
+
+                <!-- 2. Filter Logic -->
+                <div class="form-group">
+                    <label style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Apply Filter:</label>
+                    
+                    <div class="filter-row">
+                        <!-- Columns will be from CURRENTLY SELECTED DF -->
+                        <select name="target_col" required>
+                            <option value="" disabled selected>Select Column</option>
+                            {% for col in columns %}
+                            <option value="{{ col }}">{{ col }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select name="operator" required>
+                            <option value="==">== (Equals)</option>
+                            <option value="!=">!= (Not Equals)</option>
+                            <option value=">">&gt; (Greater than)</option>
+                            <option value=">=">&gt;= (Greater/Equal)</option>
+                            <option value="<">&lt; (Less than)</option>
+                            <option value="<=">&lt;= (Less/Equal)</option>
+                        </select>
+
+                        <input type="text" name="filter_val" required placeholder="Value">
+                    </div>
+                    <div class="note-text">
+                        (Note: Non-numeric columns will only work with (==, !=), also while writing string value use the exact value(case-sensitive))
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-purple" style="margin-top: 1rem;">
+                    Filter
+                </button>
+            </form>
+
+            <!-- Results -->
+            {% if preview_html %}
+                <div style="margin-top: 3rem; border-top: 1px solid #ccc; padding-top: 2rem;">
+                    <h3>Sample of {{ new_df_name }} after applying filter:</h3>
+                    
+                    <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+                        {{ preview_html|safe }}
+                    </div>
+
+                    <a href="{{ url_for('download_custom', name=new_df_name) }}">
+                        <button class="btn-purple">Download {{ new_df_name }}</button>
+                    </a>
+                </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

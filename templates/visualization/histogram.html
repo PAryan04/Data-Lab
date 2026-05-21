@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Histogram</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <main class="site-main">
+        <section class="hero-card" style="text-align: center;">
+
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('visualization_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 1.5rem; color: #333;">
+                Histogram Chart
+            </h1>
+
+            <!-- cdf_dl -->
+            <div class="cdf-container" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <form method="GET" action="{{ url_for('histogram') }}" id="cdfForm">
+                    <label style="font-weight: bold; margin-right: 10px;">Select custom data frame:</label>
+                    <select name="selected_df" onchange="document.getElementById('cdfForm').submit()" style="width: 250px;">
+                        {% for name in available_dfs %}
+                        <option value="{{ name }}" {% if name == current_selection %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <form method="POST">
+                <input type="hidden" name="selected_df" value="{{ current_selection }}">
+                <input type="hidden" name="action" value="create">
+
+                <div class="form-grid">
+                    <!-- Single column selector -->
+                    <label>Select Column:</label>
+                    <select name="histogram_col" required>
+                        <option value="" disabled selected>Select Column</option>
+                        {% for col in columns %}
+                        <option value="{{ col }}">{{ col }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="grid-divider"></div>
+
+                    <!-- xlabel -->
+                    <label>Give X-label:</label>
+                    <input type="text" name="xlabel" placeholder="Optional">
+
+                    <!-- ylabel -->
+                    <label>Give Y-label:</label>
+                    <input type="text" name="ylabel" placeholder="Optional">
+
+                    <!-- title -->
+                    <label>Give Title:</label>
+                    <input type="text" name="title" placeholder="Optional">
+
+                    <!-- xticks -->
+                    <label>X-ticks rotation(in degrees):</label>
+                    <input type="number" name="x_rot" placeholder="0">
+
+                    <!-- yticks -->
+                    <label>Y-ticks rotation(in degrees):</label>
+                    <input type="number" name="y_rot" placeholder="0">
+
+                    <!-- color -->
+                    <label style="align-self: flex-start; margin-top: 10px;">Color:</label>
+                    <div class="color-group">
+                        <input type="text" name="color" placeholder="Optional">
+                        <div class="color-note">
+                            (Note: Use the exact name of compatible colors. 
+                            <a href="https://python-graph-gallery.com/available-colors-in-matplotlib/" target="_blank" style="color: #6a1b9a;">Click here</a>)
+                        </div>
+                    </div>
+
+                    <!-- bins -->
+                    <label>Bins:</label>
+                    <input type="number" name="bins" placeholder="20">
+
+                    <!-- kde -->
+                    <label>KDE(Kernel Density<br> Estimate) Overlay:</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="kde" value="on"> On</label>
+                        <label class="radio-item"><input type="radio" name="kde" value="off" checked> Off</label>
+                    </div>
+
+                    <!-- grid -->
+                    <label>Grid:</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="grid" value="on"> On</label>
+                        <label class="radio-item"><input type="radio" name="grid" value="off" checked> Off</label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn-purple" style="padding: 0.8rem 3rem;">Create</button>
+                </div>
+            </form>
+
+            {% if chart_image %}
+            <div style="margin-top: 3rem; border-top: 1px solid #ccc; padding-top: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Chart Preview:</h3>
+                <img src="{{ url_for('static', filename='charts/' + chart_image) }}" 
+                     alt="Histogram" 
+                     style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+                <br><br>
+                <a href="{{ url_for('static', filename='charts/' + chart_image) }}" download="Histogram.jpeg">
+                    <button class="btn-purple">Download (.jpeg)</button>
+                </a>
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

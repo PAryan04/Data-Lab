@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Lab - Correlation/Pairplot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        /* Custom wider card for plots */
+        .wide-card {
+            max-width: 1200px !important; /* Overrides default 900px */
+            width: 95%;
+        }
+        /* Table styling */
+        .dataframe {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .dataframe th, .dataframe td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .dataframe th {
+            background: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-title">Data Lab</div>
+        <div class="site-tagline"><b><i>Turning Data into Decisions</i></b></div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site-main">
+        <section class="hero-card wide-card"> <!-- Wider card applied -->
+            
+            <!-- Back button (Left aligned) -->
+            <div style="text-align: left; margin-bottom: 0.5rem; width: 100%;">
+                <a href="{{ url_for('descriptive_menu') }}" class="back-btn">
+                    <button>← Back</button>
+                </a>
+            </div>
+
+            <h1 style="font-size: 2.2rem; font-weight: 800; font-style: italic; margin-bottom: 1.5rem;">
+                Correlation/ Pairplot
+            </h1>
+
+            <!-- Buttons Grid -->
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                
+                <!-- Correlation Button -->
+                <div style="text-align: center; max-width: 300px;">
+                    <form method="post">
+                        <button type="submit" name="action" value="correlation" class="btn-purple" style="width: 100%;">
+                            Find Correlation
+                        </button>
+                    </form>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.8;">
+                        Note: Correlation can be calculated among numeric columns only
+                    </p>
+                </div>
+
+                <!-- Pairplot Button -->
+                <div style="text-align: center; max-width: 300px;">
+                    <form method="post">
+                        <button type="submit" name="action" value="pairplot" class="btn-purple" style="width: 100%;">
+                            View Pairplot
+                        </button>
+                    </form>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.8;">
+                        Use pairplot to visualize all your correlation at once.
+                    </p>
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            {% if result_html %}
+                <div class="output-box" style="margin-top: 2rem;">
+                    <h3>Correlation Matrix:</h3>
+                    <div style="overflow-x: auto;">
+                        {{ result_html|safe }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if plot_url %}
+                <div class="output-box" style="margin-top: 2rem; text-align: center;">
+                    <h3>Pairplot Visualization:</h3>
+                    <img src="data:image/png;base64,{{ plot_url }}" alt="Pairplot" style="max-width: 100%; height: auto; border-radius: 8px;">
+                </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-small"><i>created by</i></div>
+            <div class="footer-author"><b><i>~Aryan Patel</i></b></div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>
